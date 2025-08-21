@@ -6,17 +6,14 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [windows-latest, macos-latest]
+        os: [windows-latest]
         build_type: [Release]
         ui: [gui, cli]
         scripting: [lua, noscripts]
-        exclude:
-          - build_type: Debug
+        include:
+          - os: windows-latest
+            build_type: Release
             ui: gui
-          - build_type: RelWithDebInfo
-            ui: cli
-          - build_type: RelWithDebInfo
-            scripting: noscripts
     steps:
     - uses: actions/checkout@v4
       with:
@@ -90,3 +87,10 @@ jobs:
       shell: bash
       run: |
         cd build && ninja
+    - uses: actions/upload-artifact@v4
+      with:
+        name: aseprite
+        path: |
+          libcrypto-1_1-x64.dll
+          D:/a/aseprite/aseprite/build/bin/data
+          D:/a/aseprite/aseprite/build/bin/aseprite.exe
